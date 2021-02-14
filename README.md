@@ -25,7 +25,7 @@ sudo apt install apache2 -y
 ```sh
 sudo systemctl status apache2
 ```
-- You should the get an output showing that the apache2.service is running and enabled.
+- You should get an output showing that the apache2.service is running and enabled.
 - Once installed, test by accessing your server’s IP in your browser:
 ```sh
 # curl -4 icanhazip.com  ## to get the IP
@@ -33,7 +33,7 @@ http://YOURSERVERIPADDRESS/
 ```
 - You should see a page with an “Apache2 Ubuntu Default” header showing that Apache2 has been installed successfully.
 ## Step 3: Installing and testing PHP 7.4
-- PHP 7.4 is the latest available right now so let’s install that along with some regularly used modules:
+- Let’s install PHP 7.4 as a stable version:
 ```sh
 sudo apt install php7.4 php7.4-mysql php-common php7.4-cli php7.4-json php7.4-common php7.4-opcache libapache2-mod-php7.4 -y
 ```
