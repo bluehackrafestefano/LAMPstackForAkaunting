@@ -1,3 +1,4 @@
+# Task-1:
 ## LAMPstackForAkauntingTask
 This repo is created to execute Akaunting task by creating a LAMP stack with Github Actions.
 ## Step 1: Preparing Ubuntu server
@@ -72,3 +73,23 @@ sudo systemctl status mariadb
 sudo mysql_secure_installation
 ```
 - As you have no root password set for MariaDB you should simply press Enter when prompted, pressing Y on the next question to then set a root password (keep this safe and secure!) With that set, you can press Enter for the remaining questions as the defaults for each of these will help to secure your new installation.
+## Basic PHP-enabled page
+- Create a file named hello.php and put it under /var/www/html/ with the following content:
+```html
+<html>
+ <head>
+  <title>PHP Test</title>
+ </head>
+ <body>
+ <?php echo '<p>Hello World</p>'; ?> 
+ </body>
+</html>
+```
+- Test "hello world" php page is working by accessing the following in your browser:
+```sh
+# curl -4 icanhazip.com  ## to get the IP
+http://YOURSERVERIPADDRESS/hello.php
+```
+# Task-2:
+- Akaunting, as far as I know, has one development team, working on software projects.
+- 
