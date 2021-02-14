@@ -1,5 +1,5 @@
 # Task-1:
-## LAMPstackForAkauntingTask
+## LAMPstackForAkauntingTaskonAWS
 This repo is created to execute Akaunting task by creating a LAMP stack with Github Actions.
 ## Step 1: Preparing Ubuntu server
 - Create an Ubuntu server on cloud and connect to it using SSH
@@ -9,13 +9,13 @@ This repo is created to execute Akaunting task by creating a LAMP stack with Git
 sudo apt update
 sudo apt upgrade -y
 ```
-<!-- -Now open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
+- If it's needed, open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
 ```sh
 sudo ufw allow ssh
 sudo ufw allow 80
 sudo ufw allow 443
 sudo ufw enable
-``` -->
+```
 ## Step 2: Installing and testing Apache2
 - Install Apache using apt:
 ```sh
@@ -62,7 +62,7 @@ sudo rm /var/www/html/phpinfo.php
 ## Step 4: Installing and securing MariaDB
 - Install the required packages:
 ```sh
-sudo apt install mariadb-server mariadb-client
+sudo apt install mariadb-server mariadb-client -y
 ```
 - Once installed, check it’s running correctly:
 ```sh
@@ -75,6 +75,9 @@ sudo mysql_secure_installation
 - As you have no root password set for MariaDB you should simply press Enter when prompted, pressing Y on the next question to then set a root password (keep this safe and secure!) With that set, you can press Enter for the remaining questions as the defaults for each of these will help to secure your new installation.
 ## Basic PHP-enabled page
 - Create a file named hello.php and put it under /var/www/html/ with the following content:
+```bash
+cd /var/www/html/ && sudo nano hello.php 
+```
 ```html
 <html>
  <head>
@@ -90,6 +93,63 @@ sudo mysql_secure_installation
 # curl -4 icanhazip.com  ## to get the IP
 http://YOURSERVERIPADDRESS/hello.php
 ```
+
+
+<!-- 
+# Task-1-b:
+## LAMPstackForAkauntingTaskonDigitalOcean
+This repo is created to execute Akaunting task by creating a LAMP stack with Github Actions.
+## Creating a PHP & MySQL (LAMP) Droplet and Check ports / installed packages
+- Open Digital Ocean dashboard and choose PHP LAMP server from Marketplace.
+- Select Droplet type.
+- Select the region that is closest to you or potential users of your project.
+- Create a root password to access this droplet as the root user.
+- Connect to the droplet via SSH.
+- Update the server:
+```sh
+sudo apt update
+sudo apt upgrade -y
+```
+- Check the status of the ports:
+```sh
+sudo ufw status
+```
+- If it's needed open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
+```sh
+sudo ufw allow ssh
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw enable
+```
+- Confirm that Apache is now running with the following command:
+```sh
+sudo systemctl status apache2
+```
+- Check the php installation and version:
+```sh
+php --version
+```
+- Check MySQL version:
+```sh
+mysql -V
+```
+- Secure MySQL service:
+```sh
+sudo mysql_secure_installation
+```
+- As you have no root password set for MariaDB you should simply press Enter when prompted, pressing Y on the next question to then set a root password (keep this safe and secure!) With that set, you can press Enter for the remaining questions as the defaults for each of these will help to secure your new installation.
+- Test apache server by accessing your server’s IP in your browser:
+```sh
+# curl -4 icanhazip.com  ## to get the IP
+http://YOURSERVERIPADDRESS/
+```
+- You should see a page with an “Apache2 Ubuntu Default” header showing that Apache2 has been installed successfully.
+```sh
+sudo ufw app list
+sudo ufw app info "Apache Full"
+sudo ufw allow in "Apache Full"
+``` -->
+
 # Task-2:
 - Akaunting, as far as I know, has one development team, working on software projects.
 - 
