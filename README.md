@@ -1,7 +1,7 @@
 # Task-1:
-## LAMPstackForAkauntingTaskonAWS
+## LAMPstackForAkauntingTask
 This repo is created to execute Akaunting task by creating a LAMP stack with Github Actions.
-## Step 1: Preparing Ubuntu server
+### Step 1: Preparing Ubuntu server
 - Create an Ubuntu server on cloud and connect to it using SSH
 - Initially it is an "Ubuntu Server 20.04 LTS (HVM), SSD Volume Type - ami-03d315ad33b9d49c4", t2.micro, on us-east-1 region, allows SSH connection on port 22, and also port 80 and 443 are open for http/s connections on AWS. 
 - Update the server:
@@ -9,14 +9,14 @@ This repo is created to execute Akaunting task by creating a LAMP stack with Git
 sudo apt update
 sudo apt upgrade -y
 ```
-- If it's needed, open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
+- Open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
 ```sh
 sudo ufw allow ssh
 sudo ufw allow 80
 sudo ufw allow 443
 sudo ufw enable
 ```
-## Step 2: Installing and testing Apache2
+### Step 2: Installing and testing Apache2
 - Install Apache using apt:
 ```sh
 sudo apt install apache2 -y
@@ -32,7 +32,7 @@ sudo systemctl status apache2
 http://YOURSERVERIPADDRESS/
 ```
 - You should see a page with an “Apache2 Ubuntu Default” header showing that Apache2 has been installed successfully.
-## Step 3: Installing and testing PHP 7.4
+### Step 3: Installing and testing PHP 7.4
 - Let’s install PHP 7.4 as a stable version:
 ```sh
 sudo apt install php7.4 php7.4-mysql php-common php7.4-cli php7.4-json php7.4-common php7.4-opcache libapache2-mod-php7.4 -y
@@ -59,7 +59,7 @@ http://YOURSERVERIPADDRESS/phpinfo.php
 ```sh
 sudo rm /var/www/html/phpinfo.php
 ```
-## Step 4: Installing and securing MariaDB
+### Step 4: Installing and securing MariaDB
 - Install the required packages:
 ```sh
 sudo apt install mariadb-server mariadb-client -y
@@ -73,7 +73,7 @@ sudo systemctl status mariadb
 sudo mysql_secure_installation
 ```
 - As you have no root password set for MariaDB you should simply press Enter when prompted, pressing Y on the next question to then set a root password (keep this safe and secure!) With that set, you can press Enter for the remaining questions as the defaults for each of these will help to secure your new installation.
-## Basic PHP-enabled page
+### Step 5: Creating Basic PHP-enabled page
 - Create a file named hello.php and put it under /var/www/html/ with the following content:
 ```bash
 cd /var/www/html/ && sudo nano hello.php 
@@ -93,62 +93,100 @@ cd /var/www/html/ && sudo nano hello.php
 # curl -4 icanhazip.com  ## to get the IP
 http://YOURSERVERIPADDRESS/hello.php
 ```
+### Step 6: Create a self hosted Github Action
+- Open the CLI, on your ubuntu server, first create a user, this is necessary to implement self hosting:
+```sh
+adduser username
+```
+- Configure password and other credientials
+- Add that user to sudo group:
+```sh
+adduser username sudo
+```
+- Login as the new user:
+```sh
+sudo su - newuser
+```
+- Go to Github account and create a private repository, give a name
+- Go to Settings of your repo
+- Click Actions on the left side menu
+- Scroll down and click Add runner on Self-hosted runners window
+- Change OS to Linux
+- Implement the steps shown on the page, open CLI again:
+- Create a folder:
+```sh
+mkdir actions-runner && cd actions-runner
+```
+- Download the latest runner package:
+```sh
+curl -O -L https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
+```
+- Extract the installer:
+```sh
+tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
+```
+- Create the runner and start the configuration experience:
+```sh
+./config.sh --url https://github.com/\<reponame> --token \<token>
+```
+- Enter name of the runner if you want, else hit Enter
+- Enter additional labels if you want, else hit Enter
+- Enter work folder if you want, else hit Enter
+- Last step, run it:
+```sh
+./run.sh
+```
+- Server starts to listen for Jobs from Github Actions
+- Create a simple workflow file on the repo ".github/workflows/blank.yml"
+```yml
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+```
+- Now, our github actions running on self-hosted, Digital Ocean server.  
 
 
-<!-- 
-# Task-1-b:
-## LAMPstackForAkauntingTaskonDigitalOcean
-This repo is created to execute Akaunting task by creating a LAMP stack with Github Actions.
-## Creating a PHP & MySQL (LAMP) Droplet and Check ports / installed packages
-- Open Digital Ocean dashboard and choose PHP LAMP server from Marketplace.
-- Select Droplet type.
-- Select the region that is closest to you or potential users of your project.
-- Create a root password to access this droplet as the root user.
-- Connect to the droplet via SSH.
-- Update the server:
+
+- If you want to test further, create a quick PHP info page to view in a browser. The following command creates the PHP info page:
 ```sh
-sudo apt update
-sudo apt upgrade -y
+sudo sh -c 'echo "<?php phpinfo(); ?>" > /var/www/html/info.php'
 ```
-- Check the status of the ports:
-```sh
-sudo ufw status
-```
-- If it's needed open ports 22 (for SSH), 80 and 443 and enable Ubuntu Firewall (ufw):
-```sh
-sudo ufw allow ssh
-sudo ufw allow 80
-sudo ufw allow 443
-sudo ufw enable
-```
-- Confirm that Apache is now running with the following command:
-```sh
-sudo systemctl status apache2
-```
-- Check the php installation and version:
-```sh
-php --version
-```
-- Check MySQL version:
-```sh
-mysql -V
-```
-- Secure MySQL service:
-```sh
-sudo mysql_secure_installation
-```
-- As you have no root password set for MariaDB you should simply press Enter when prompted, pressing Y on the next question to then set a root password (keep this safe and secure!) With that set, you can press Enter for the remaining questions as the defaults for each of these will help to secure your new installation.
-- Test apache server by accessing your server’s IP in your browser:
-```sh
-# curl -4 icanhazip.com  ## to get the IP
-http://YOURSERVERIPADDRESS/
-```
-- You should see a page with an “Apache2 Ubuntu Default” header showing that Apache2 has been installed successfully.
-```sh
-sudo ufw app list
-sudo ufw app info "Apache Full"
-sudo ufw allow in "Apache Full"
-``` -->
+- {: pre} Now you can check the PHP info page you created. Open a browser and go to http://YourPublicIPAddress/info.php. Substitute the public IP address of your virtual server. It should look similar to this image.
+
+
 
 # Task-2:
 - Akaunting, as far as I know, has one development team, working on software projects.
