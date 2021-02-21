@@ -21,6 +21,10 @@ sudo ufw enable
 ```sh
 sudo apt install apache2 -y
 ```
+```sh
+# Starting Apache server:
+# sudo service apache2 start
+```
 - Confirm that Apache is now running with the following command:
 ```sh
 sudo systemctl status apache2
@@ -44,6 +48,10 @@ php --version
 - Restart Apache for the changes to take effect:
 ```sh
 sudo systemctl restart apache2
+```
+```sh
+# Restarting Apache server:
+# sudo service apache2 restart
 ```
 - Create a phpinfo.php test page:
 ```sh
@@ -73,6 +81,24 @@ sudo systemctl status mariadb
 sudo mysql_secure_installation
 ```
 - As you have no root password set for MariaDB you should simply press Enter when prompted, pressing Y on the next question to then set a root password (keep this safe and secure!) With that set, you can press Enter for the remaining questions as the defaults for each of these will help to secure your new installation.
+- Turn on password authentication, which is not by default:
+```sh
+sudo mysql
+```
+```sql
+select user, authentication_string from myswl.user;
+
+alter user root@localhost identified with mysql_native_password by 'password';
+
+flush privilages;
+
+exit
+```
+- Test this:
+```sh
+mysql -u root -p
+```
+- And type root password you specified!
 ### Step 5: Creating Basic PHP-enabled page
 - Create a file named hello.php and put it under /var/www/html/ with the following content:
 ```bash
