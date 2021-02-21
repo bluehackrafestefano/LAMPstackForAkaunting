@@ -203,15 +203,12 @@ jobs:
           echo test, and deploy your project.
 ```
 - Now, our github actions running on self-hosted, Digital Ocean server.  
-
-
-
-- If you want to test further, create a quick PHP info page to view in a browser. The following command creates the PHP info page:
-```sh
-sudo sh -c 'echo "<?php phpinfo(); ?>" > /var/www/html/info.php'
-```
-- {: pre} Now you can check the PHP info page you created. Open a browser and go to http://YourPublicIPAddress/info.php. Substitute the public IP address of your virtual server. It should look similar to this image.
-
+### Step 7: Basic PHP Unit Test
+- The easiest way to obtain PHPUnit is to download a PHP Archive (PHAR) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file.
+- The phar extension is required for using PHP Archives (PHAR).
+- The PHPUnit PHAR can be used immediately after download:
+- Create a folder phpunittest
+- 
 
 
 # Task-2:
